@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free educational app for JEE and NEET students with calculator, formulas, notes, periodic table, and study tools">
+    <meta name="keywords" content="JEE, NEET, study, calculator, formulas, notes, periodic table, exam preparation">
+    <title>JEEro - Your JEE & NEET Study Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg-main: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Dark Theme */
+        body.dark {
+            --bg-main: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #334155;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .user-greeting {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .theme-toggle, .pdf-btn, .btn {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover, .pdf-btn:hover, .btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pdf-btn {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* AdSense Placeholder */
+        .ad-container {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-muted);
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 16px 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .nav-tabs::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .nav-tabs::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Calculator */
+        .calculator {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .calc-display {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .calc-expression {
+            color: var(--text-muted);
+            font-size: 14px;
+            min-height: 20px;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        .calc-result {
+            color: var(--text-primary);
+            font-size: 32px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            padding: 18px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calc-btn:active {
+            transform: scale(0.95);
+        }
+
+        .calc-btn:hover {
+            background: var(--bg-main);
+        }
+
+        .calc-btn.operator {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .calc-btn.equals {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .calc-btn.clear {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .calc-btn.function {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+            font-size: 13px;
+        }
+
+        /* Formula Cards */
+        .subject-filter {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .formula-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .formula-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .formula-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .formula-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .formula-badge {
+            padding: 4px 10px;
+            background: var(--primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .formula-content {
+            font-family: 'Fira Code', monospace;
+            font-size: 15px;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+        }
+
+        .formula-image {
+            width: 100%;
+            border-radius: 6px;
+            margin: 12px 0;
+        }
+
+        .formula-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            transition: all 0.2s;
+        }
+
+        .bookmark-btn.bookmarked {
+            color: var(--warning);
+        }
+
+        /* Notes */
+        .notes-selector {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .notes-selector h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .notes-select-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .note-select-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .note-select-item:hover {
+            background: var(--bg-main);
+        }
+
+        .note-select-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .note-select-item label {
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .pdf-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .note-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .note-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .note-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .note-icon {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .note-content {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .note-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .note-content li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .note-content li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .note-content img {
+            width: 100%;
+            border-radius: 6px;
+            margin: 12px 0;
+        }
+
+        /* Periodic Table */
+        .periodic-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 0;
+        }
+
+        .element-grid {
+            display: grid;
+            grid-template-columns: repeat(18, 50px);
+            grid-template-rows: repeat(10, 50px);
+            gap: 2px;
+            min-width: max-content;
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        .element {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 10px;
+        }
+
+        .element:hover {
+            transform: scale(1.15);
+            z-index: 10;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .element-number {
+            font-size: 7px;
+            color: var(--text-muted);
+        }
+
+        .element-symbol {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .element-name {
+            font-size: 6px;
+            color: var(--text-muted);
+        }
+
+        .element.alkali { border-color: #dc2626; border-width: 2px; }
+        .element.alkaline { border-color: #ea580c; border-width: 2px; }
+        .element.transition { border-color: #d97706; border-width: 2px; }
+        .element.post-transition { border-color: #84cc16; border-width: 2px; }
+        .element.metalloid { border-color: #10b981; border-width: 2px; }
+        .element.nonmetal { border-color: #14b8a6; border-width: 2px; }
+        .element.halogen { border-color: #06b6d4; border-width: 2px; }
+        .element.noble { border-color: #6366f1; border-width: 2px; }
+        .element.lanthanide { border-color: #8b5cf6; border-width: 2px; }
+        .element.actinide { border-color: #d946ef; border-width: 2px; }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+
+        /* Constants */
+        .constants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .constant-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+
+        .constant-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .constant-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .constant-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 16px;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .constant-unit {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Timer */
+        .timer-wrapper {
+            max-width: 480px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .timer-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 40px 0;
+        }
+
+        .timer-presets {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .preset-btn {
+            padding: 10px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            padding: 12px 32px;
+            background: var(--primary);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .timer-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .timer-btn.stop {
+            background: var(--danger);
+        }
+
+        .timer-btn.reset {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .modal-body {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Registration Form */
+        .registration-modal .modal-content {
+            max-width: 450px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .admin-section {
+            margin-bottom: 32px;
+        }
+
+        .admin-section h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 20px;
+            }
+
+            .calc-result {
+                font-size: 24px;
+            }
+
+            .timer-display {
+                font-size: 48px;
+            }
+
+            .element-grid {
+                grid-template-columns: repeat(18, 40px);
+                grid-template-rows: repeat(10, 40px);
+            }
+
+            .element-symbol {
+                font-size: 14px;
+            }
+
+            .formula-grid, .notes-grid, .constants-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .theme-toggle, .pdf-btn {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .element-grid {
+                grid-template-columns: repeat(18, 35px);
+                grid-template-rows: repeat(10, 35px);
+            }
+
+            .element-number, .element-name {
+                display: none;
+            }
+
+            .element-symbol {
+                font-size: 12px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            header, .nav-tabs, .ad-container, .notes-selector {
+                display: none;
+            }
+
+            .note-card {
+                page-break-inside: avoid;
+                border: 1px solid #000;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Study Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Content Management List */
+        .content-list {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .content-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .content-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .content-item:last-child {
+            border-bottom: none;
+        }
+
+        .content-item-info {
+            flex: 1;
+        }
+
+        .content-item-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .content-item-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .content-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-delete {
+            padding: 6px 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+        }
+
+        .btn-view {
+            padding: 6px 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-view:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">∞</div>
+                    <span>JEEro</span>
+                </div>
+                <div class="user-greeting" id="userGreeting"></div>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+                    <button class="btn btn-danger hidden" id="adminBtn" onclick="showTab('admin', event)">⚙️ Admin</button>
+                    <button class="pdf-btn" onclick="showPDFModal()" style="display: none;" id="pdfButton">📄 Create PDF</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ad Space -->
+    <div class="container">
+        <div class="ad-container">
+            <!-- AdSense code will go here -->
+            Advertisement Space
+        </div>
+    </div>
+
+    <div class="container">
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('calculator', event)">🧮 Calculator</button>
+            <button class="tab-btn" onclick="showTab('formulas', event)">📐 Formulas</button>
+            <button class="tab-btn" onclick="showTab('notes', event)">📝 Notes</button>
+            <button class="tab-btn" onclick="showTab('periodic', event)">🧪 Periodic Table</button>
+            <button class="tab-btn" onclick="showTab('constants', event)">⚛️ Constants</button>
+            <button class="tab-btn" onclick="showTab('timer', event)">⏱️ Timer</button>
+            <button class="tab-btn" onclick="showTab('bookmarks', event)">⭐ Bookmarks</button>
+        </nav>
+
+        <!-- Calculator -->
+        <div id="calculator" class="content-section active">
+            <div class="calculator">
+                <div class="calc-display">
+                    <div class="calc-expression" id="expression"></div>
+                    <div class="calc-result" id="result">0</div>
+                </div>
+                <div class="calc-buttons">
+                    <button class="calc-btn function" onclick="calcFunction('sin')">sin</button>
+                    <button class="calc-btn function" onclick="calcFunction('cos')">cos</button>
+                    <button class="calc-btn function" onclick="calcFunction('tan')">tan</button>
+                    <button class="calc-btn function" onclick="calcFunction('log')">log</button>
+                    
+                    <button class="calc-btn function" onclick="calcFunction('sqrt')">√</button>
+                    <button class="calc-btn function" onclick="calcFunction('square')">x²</button>
+                    <button class="calc-btn function" onclick="calcFunction('cube')">x³</button>
+                    <button class="calc-btn function" onclick="calcFunction('exp')">eˣ</button>
+                    
+                    <button class="calc-btn clear" onclick="clearCalc()">C</button>
+                    <button class="calc-btn operator" onclick="appendOperator('/')">÷</button>
+                    <button class="calc-btn operator" onclick="appendOperator('*')">×</button>
+                    <button class="calc-btn operator" onclick="deleteChar()">⌫</button>
+                    
+                    <button class="calc-btn" onclick="appendNumber('7')">7</button>
+                    <button class="calc-btn" onclick="appendNumber('8')">8</button>
+                    <button class="calc-btn" onclick="appendNumber('9')">9</button>
+                    <button class="calc-btn operator" onclick="appendOperator('-')">−</button>
+                    
+                    <button class="calc-btn" onclick="appendNumber('4')">4</button>
+                    <button class="calc-btn" onclick="appendNumber('5')">5</button>
+                    <button class="calc-btn" onclick="appendNumber('6')">6</button>
+                    <button class="calc-btn operator" onclick="appendOperator('+')">+</button>
+                    
+                    <button class="calc-btn" onclick="appendNumber('1')">1</button>
+                    <button class="calc-btn" onclick="appendNumber('2')">2</button>
+                    <button class="calc-btn" onclick="appendNumber('3')">3</button>
+                    <button class="calc-btn function" onclick="appendOperator('^')">xʸ</button>
+                    
+                    <button class="calc-btn" onclick="appendNumber('0')">0</button>
+                    <button class="calc-btn" onclick="appendNumber('.')">.</button>
+                    <button class="calc-btn equals" onclick="calculate()">=</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulas -->
+        <div id="formulas" class="content-section">
+            <input type="text" class="search-bar" id="formulaSearch" placeholder="🔍 Search formulas..." onkeyup="searchFormulas()">
+            <div class="subject-filter">
+                <button class="filter-btn active" onclick="filterFormulas('all')">All</button>
+                <button class="filter-btn" onclick="filterFormulas('physics')">Physics</button>
+                <button class="filter-btn" onclick="filterFormulas('chemistry')">Chemistry</button>
+                <button class="filter-btn" onclick="filterFormulas('maths')">Maths</button>
+                <button class="filter-btn" onclick="filterFormulas('biology')">Biology</button>
+            </div>
+            <div class="formula-grid" id="formulaList"></div>
+        </div>
+
+        <!-- Notes -->
+        <div id="notes" class="content-section">
+            <div class="notes-selector">
+                <h3>Select Notes for PDF</h3>
+                <div class="notes-select-grid" id="notesSelector"></div>
+                <div class="pdf-controls">
+                    <button class="pdf-btn" onclick="generatePDF()">📄 Generate PDF</button>
+                    <button class="theme-toggle" onclick="selectAllNotes()">✓ Select All</button>
+                    <button class="theme-toggle" onclick="clearNoteSelection()">✗ Clear All</button>
+                </div>
+            </div>
+            <div class="notes-grid" id="notesList"></div>
+        </div>
+
+        <!-- Periodic Table -->
+        <div id="periodic" class="content-section">
+            <input type="text" class="search-bar" id="elementSearch" placeholder="🔍 Search elements..." onkeyup="searchElements()">
+            <div class="periodic-wrapper">
+                <div class="element-grid" id="periodicTable"></div>
+            </div>
+            <div class="legend">
+                <div class="legend-item"><span class="legend-color" style="border-color: #dc2626;"></span> Alkali Metals</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #ea580c;"></span> Alkaline Earth</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #d97706;"></span> Transition Metals</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #84cc16;"></span> Post-Transition</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #10b981;"></span> Metalloids</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #14b8a6;"></span> Nonmetals</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #06b6d4;"></span> Halogens</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #6366f1;"></span> Noble Gases</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #8b5cf6;"></span> Lanthanides</div>
+                <div class="legend-item"><span class="legend-color" style="border-color: #d946ef;"></span> Actinides</div>
+            </div>
+        </div>
+
+        <!-- Constants -->
+        <div id="constants" class="content-section">
+            <input type="text" class="search-bar" id="constantSearch" placeholder="🔍 Search constants..." onkeyup="searchConstants()">
+            <div class="constants-grid" id="constantsList"></div>
+        </div>
+
+        <!-- Timer -->
+        <div id="timer" class="content-section">
+            <div class="timer-wrapper">
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                <div class="timer-presets">
+                    <button class="preset-btn" onclick="setTimer(25)">25 min</button>
+                    <button class="preset-btn" onclick="setTimer(45)">45 min</button>
+                    <button class="preset-btn" onclick="setTimer(60)">1 hour</button>
+                    <button class="preset-btn" onclick="setTimer(90)">1.5 hours</button>
+                    <button class="preset-btn" onclick="setTimer(180)">3 hours</button>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn" onclick="startTimer()">▶ Start</button>
+                    <button class="timer-btn stop" onclick="pauseTimer()">⏸ Pause</button>
+                    <button class="timer-btn reset" onclick="resetTimer()">↻ Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookmarks -->
+        <div id="bookmarks" class="content-section">
+            <div id="bookmarksList"></div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin" class="content-section">
+            <div class="admin-panel">
+                <h2 style="margin-bottom: 24px;">Admin Panel</h2>
+                
+                <!-- Student Statistics -->
+                <div class="admin-section">
+                    <h3>Student Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalStudents">0</div>
+                            <div class="stat-label">Total Students</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="jeeStudents">0</div>
+                            <div class="stat-label">JEE Students</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="neetStudents">0</div>
+                            <div class="stat-label">NEET Students</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="otherStudents">0</div>
+                            <div class="stat-label">Other Students</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="viewStudentList()">View Student List</button>
+                    <button class="btn btn-primary" onclick="exportToGoogleSheets()">Export to Google Sheets</button>
+                </div>
+
+                <!-- Add Formula -->
+                <div class="admin-section">
+                    <h3>Add Formula</h3>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <select id="formulaSubject">
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="maths">Maths</option>
+                            <option value="biology">Biology</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="formulaCategory" placeholder="e.g., Mechanics, Organic Chemistry">
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="formulaTitle" placeholder="e.g., Newton's Second Law">
+                    </div>
+                    <div class="form-group">
+                        <label>Formula (text)</label>
+                        <input type="text" id="formulaText" placeholder="e.g., F = ma">
+                    </div>
+                    <div class="form-group">
+                        <label>Or Upload Formula Image</label>
+                        <div class="upload-area" id="formulaImageUpload" onclick="document.getElementById('formulaImageInput').click()">
+                            <p>📸 Click or drag to upload formula image</p>
+                            <input type="file" id="formulaImageInput" accept="image/*" style="display: none;" onchange="handleFormulaImageUpload(event)">
+                        </div>
+                        <div id="formulaImagePreview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="formulaDescription" placeholder="Brief description">
+                    </div>
+                    <button class="btn btn-primary" onclick="addFormula()">Add Formula</button>
+                </div>
+
+                <!-- Add Note -->
+                <div class="admin-section">
+                    <h3>Add Note</h3>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <select id="noteSubject">
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Maths">Maths</option>
+                            <option value="Biology">Biology</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="noteTitle" placeholder="e.g., Laws of Motion">
+                    </div>
+                    <div class="form-group">
+                        <label>Content (HTML format, use &lt;ul&gt;&lt;li&gt; for bullet points)</label>
+                        <textarea id="noteContent" rows="6" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Or Upload Note Image/PDF</label>
+                        <div class="upload-area" id="noteImageUpload" onclick="document.getElementById('noteImageInput').click()">
+                            <p>📄 Click or drag to upload note image/PDF</p>
+                            <input type="file" id="noteImageInput" accept="image/*,application/pdf" style="display: none;" onchange="handleNoteImageUpload(event)">
+                        </div>
+                        <div id="noteImagePreview"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addNote()">Add Note</button>
+                </div>
+
+                <!-- Manage Content -->
+                <div class="admin-section">
+                    <h3>Manage Content</h3>
+                    <button class="btn btn-primary" onclick="viewAllFormulas()">View & Delete Formulas</button>
+                    <button class="btn btn-primary" onclick="viewAllNotes()">View & Delete Notes</button>
+                    <button class="btn btn-primary" onclick="exportContent()">Export All Content</button>
+                    <button class="btn btn-danger" onclick="clearAllContent()">Clear All Content (Dangerous!)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal registration-modal" id="registrationModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Welcome to JEEro! 🎓</h2>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px;">Let's get to know you better to personalize your learning experience.</p>
+                <form id="registrationForm" onsubmit="handleRegistration(event)">
+                    <div class="form-group">
+                        <label for="userName">Your Name *</label>
+                        <input type="text" id="userName" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="userAge">Age *</label>
+                        <input type="number" id="userAge" required min="10" max="30" placeholder="Enter your age">
+                    </div>
+                    <div class="form-group">
+                        <label for="userExam">Preparing for *</label>
+                        <select id="userExam" required>
+                            <option value="">Select exam</option>
+                            <option value="JEE">JEE (Engineering)</option>
+                            <option value="NEET">NEET (Medical)</option>
+                            <option value="Both">Both JEE & NEET</option>
+                            <option value="Other">Other/Just Learning</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userClass">Class/Grade (Optional)</label>
+                        <input type="text" id="userClass" placeholder="e.g., 11th, 12th, Dropper">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Start Learning 🚀</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- General Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="jeero-app.js"></script>
+</body>
+</html>
